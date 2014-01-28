@@ -1,0 +1,128 @@
+
+defscrollback 1000
+
+# don't display the copyright page
+startup_message off
+
+# When  any  activity  occurs in a background window that is being
+# monitored, screen displays  a  notification  in  the message  line.
+# There are also some specials like embedded branches (with %?),
+# color codes (with %{xy}) and padding (with %=, %<, %>).
+# you can find their description in the manual in section
+# "STRING ESCAPES":
+# activity              "%C -> %n%f %t activity!"
+activity '*knock* *knock* Wake up ... window %n'
+
+# detach on hangup
+autodetach on
+
+
+# When a bell character is  sent  to  a  background  window screen
+# displays  a notification in the message line.
+# bell                  "%C -> %n%f %t bell!~"
+bell_msg '*knock* *knock* Follow the white rabbit in window %n'
+
+# The  message  specified  here  is output whenever a `Power detach'
+# was performed.
+pow_detach_msg        "BYE"
+
+# Sets the visual bell message. message is  printed  to  the status
+# line if the window receives a bell character (^G).
+vbell_msg             " bell! "
+
+vbell off
+
+# XTERM TWEAKS
+# ===============================================================
+
+# xterm understands both im/ic and doesn't have a status line.
+# Note: Do not specify im and ic in the real termcap/info file as
+# some programs (e.g. vi) will not work anymore.
+  termcap  xterm hs@:cs=\E[%i%d;%dr:im=\E[5h:ei=\E[4l
+  terminfo xterm hs@:cs=\E[%i%p1%d;%p2%dr:im=\E[4h:ei=\E[4l
+
+# 80/132 column switching must be enabled for ^AW to work
+# change init sequence to not switch width
+  termcapinfo  xterm Z0=\E[?3h:Z1=\E[?3l:is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l
+
+# Make the output buffer large for (fast) xterms.
+# termcapinfo xterm* OL=10000
+  termcapinfo xterm* OL=100
+
+# tell screen that xterm can switch to dark background and has function
+# keys.
+  termcapinfo xterm 'VR=\E[?5h:VN=\E[?5l'
+  termcapinfo xterm 'k1=\E[11~:k2=\E[12~:k3=\E[13~:k4=\E[14~'
+  termcapinfo xterm 'kh=\EOH:kI=\E[2~:kD=\E[3~:kH=\EOF:kP=\E[5~:kN=\E[6~'
+
+# special xterm hardstatus: use the window title.
+  termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+
+#terminfo xterm 'vb=\E[?5h$<200/>\E[?5l'
+  termcapinfo xterm 'vi=\E[?25l:ve=\E[34h\E[?25h:vs=\E[34l'
+
+# emulate part of the 'K' charset
+  termcapinfo xterm 'XC=K%,%\E(B,[\304,\\\\\326,]\334,{\344,|\366,}\374,~\337'
+
+# xterm-52 tweaks:
+# - uses background color for delete operations
+termcapinfo xterm* be
+
+################
+#
+## keybindings
+#
+#
+##remove some stupid / dangerous key bindings
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+bind ^h
+bind h
+
+
+#bind N screen -t 'todo' bash -c "date \"+%n--- --- --- %d-%m-%Y-%H:%M --- --- ---%n%n\" >> $HOME/.todo; vim -c %%\'$|startinsert!\' $HOME/.todo"
+#bindkey -k k4 next
+#bindkey -k k5 prev
+
+# This  command configures the use and emulation of the ter minal's
+# hardstatus line.
+#  hardstatus alwayslastline "%?%{yk}%-Lw%?%{wk}%n*%f %t%?(%u)%?%?%{yk}%+Lw%? %=%t %c"
+#  hardstatus alwayslastline "%{rk}[Time:%c] %{gb} %w %{= dd}"
+#  hardstatus alwayslastline "%{= kG} %w %{= dd} %=%t %{rk}[Time:%c]"
+#  hardstatus alwayslastline "%{kr}[Time: %c:%s]%{gk} %{+b } %w %{= dd} %=%t"
+#  hardstatus alwayslastline "%?%{yk}%-Lw%?%{wb}%n*%f %t%?(%u)%?%?%{yk}%+Lw%?"
+# hardstatus alwayslastline "%{kr}[%H@$LOGNAME]%{wk} %?%-Lw%?%{gk}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?"
+#hardstatus alwayslastline "%{kr}[%M %d :: %c]%{wk} %?%-Lw%?%{gk}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?"
+##hardstatus alwayslastline "%{= kY}%c%{dd} %{= kc}windows: %?%-Lw%?%{= kY}%n*%f %t%?(%u)%?%{= kc}%?%+Lw%?"
+hardstatus alwayslastline "%{= kR}[%M %d :: %c]%{dd} %{= kc}%?%-Lw%?%{= kY}%n*%f %t%?(%u)%?%{= kc}%?%+Lw%?"
+# hardstatus alwayslastline "%{kr}[Time: %c:%s]%{wk} %?%-Lw%?%{gk}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?"
+#  hardstatus alwayslastline "%{bw}%1`%= %{+b ky}| %c:%s |%{+b rw} ip: %2` | vpn: %3`"
+#  hardstatus alwayslastline "%?%{yk}%-Lw%?%{wb}%n*%f %t%?(%u)%?%?%{yk}%+Lw%?"
+#  hardstatus alwayslastline "%{kr}[Time: %c:%s]%{gk} %{+b } %w %{= dd} %=%t"
+#  hardstatus alwayslastline "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"
+#  hardstatus alwayslastline "\033[m\033[42;30m %m%d \033[m \033[42;30m%c\033[m\033[42;30m %w \033[m"
+#  hardstatus alwayslastline " %m%d \033[42;30m%c\033[m \033[42;30m %w \033[m"
+#  hardstatus alwayslastline " %m%d %c \033[42;30m %w \033[m"
+#  hardstatus lastline " [%{b}fnord%{d}] | %n [%{r}%t%{d}] %W | %m/%d/%Y | %c"
+#  hardstatus alwayslastline "%?%{yk}%-Lw%?%{wb}%n*%f %t%?(%u)%?%?%{yk}%+Lw%?"
+#  hardstatus alwayslastline "%?%F%{.R.}%?%3n %t%? [%h]%?"
+
+# Change the way screen does highlighting for  text  marking and
+# printing  messages.
+sorendition    kG
+sorendition 02 40
+sorendition 10 99
+
+shell -$SHELL
+
+
+ # terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+# tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+# erase background with current bg color
+defbce "on" 
